@@ -51,7 +51,7 @@ def render(uid, umap_path, useq_path, uconfig_path):
         # required
         "-game",
         "-MoviePipelineLocalExecutorClass=/Script/MovieRenderPipelineCore.MoviePipelinePythonHostExecutor",
-        "-ExecutorPythonClass=/Engine/PythonTypes.MyExecutor",
+        "-ExecutorPythonClass=/Engine/PythonTypes.MoviePipelineExampleRuntimeExecutor",
 
         # render preview
         "-windowed",
