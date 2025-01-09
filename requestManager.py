@@ -144,7 +144,7 @@ def new_request_trigger(rrequest):
     LOGGER.info('Assigned job %s to %s', rrequest.uid, worker)
     
     # if multiple jobs came in at once, interval between each assignment
-    time.sleep(4)
+    #time.sleep(4)
     LOGGER.info('assigned job %s to %s', rrequest.uid, worker)
 
 
