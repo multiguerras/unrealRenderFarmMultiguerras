@@ -124,12 +124,15 @@ def new_request_trigger(rrequest):
     Triggers when a client posts a new render request to the server
     """
     if rrequest.worker:
+        LOGGER.debug('Request UID: %s already assigned to worker: %s', rrequest.uid, rrequest.worker)
         return
 
     # currently, as a test, assigns all job to one worker
     worker = 'RENDER_MACHINE_01'
     assign_request(rrequest, worker)
 
+    LOGGER.info('Assigned job %s to %s', rrequest.uid, worker)
+    
     # if multiple jobs came in at once, interval between each assignment
     time.sleep(4)
     LOGGER.info('assigned job %s to %s', rrequest.uid, worker)

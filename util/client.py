@@ -23,11 +23,17 @@ def get_all_requests():
     """
     try:
         response = requests.get(SERVER_API_URL+'/get')
+        LOGGER.debug('GET all requests response: %s', response.text)
     except requests.exceptions.ConnectionError:
         LOGGER.error('failed to connect to server %s', SERVER_API_URL)
         return
 
-    results = response.json()['results']
+    if response.status_code != 200:
+        LOGGER.error('Failed to get requests, status code: %d', response.status_code)
+        return
+
+    results = response.json().get('results', [])
+    LOGGER.debug('Number of requests received: %d', len(results))
     return [renderRequest.RenderRequest.from_dict(result) for result in results]
 
 

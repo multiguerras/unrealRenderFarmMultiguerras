@@ -221,6 +221,9 @@ class RenderRequest(object):
         if time_estimate:
             self.time_estimate = time_estimate
 
+        LOGGER.debug('Updating RenderRequest UID: %s with progress=%d, status=%s, time_estimate=%s',
+                     self.uid, self.progress, self.status, self.time_estimate)
+        
         write_db(self.__dict__)
 
     def assign(self, worker):
