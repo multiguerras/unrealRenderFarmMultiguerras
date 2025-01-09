@@ -23,6 +23,7 @@ def send(d):
 
 
 if __name__ == '__main__':
+    '''
     test_job_a = {
         'name': 'street_seq01',
         'owner': 'TEST_SUBMITTER_01',
@@ -30,14 +31,15 @@ if __name__ == '__main__':
         'useq_path': '/Game/Cinematics/Street/Shots/Shot01/LS_Shot_Street_Shot01.LS_Shot_Street_Shot01',
         'uconfig_path': '/Game/Cinematics/Preset/Test.Test'
     }
+    '''
 
     test_job_b = {
-        'name': 'street_seq02',
+        'name': 'Main_SEQ',
         'owner': 'TEST_SUBMITTER_01',
-        'umap_path': '/Game/Cinematics/Street/Level_Cin_Street.Level_Cin_Street',
-        'useq_path': '/Game/Cinematics/Street/Shots/Shot02/LS_Shot_Street_Shot02.LS_Shot_Street_Shot02',
-        'uconfig_path': '/Game/Cinematics/Preset/Test.Test'
+        'umap_path': '/Game/Levels/Main_LVL.Main_LVL',
+        'useq_path': '/Game/Levels/Main_SEQ.Main_SEQ',
+        'uconfig_path': '/Game/Cinematics/MoviePipeline/Presets/EditorMoviePipelineQueue.EditorMoviePipelineQueue'
     }
 
-    for job in [test_job_a, test_job_b]:
+    for job in [test_job_b]:
         send(job)
