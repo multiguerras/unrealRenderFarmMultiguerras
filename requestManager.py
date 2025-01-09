@@ -73,6 +73,7 @@ def delete_request(uid):
     :param uid: str. render request uid
     """
     renderRequest.remove_db(uid)
+    return {"deleted": uid}
 
 
 @app.post('/api/post')
