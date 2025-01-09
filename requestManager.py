@@ -102,18 +102,27 @@ def update_request(uid):
     """
     # unreal sends plain text
     content = request.data.decode('utf-8')
-    progress, time_estimate, status = content.split(';')
+    LOGGER.debug('Received PUT update for UID %s with content: %s', uid, content)
+    
+    try:
+        progress, time_estimate, status = content.split(';')
+    except ValueError:
+        LOGGER.error('Invalid update format for UID %s: %s', uid, content)
+        return {}, 400
 
     rr = renderRequest.RenderRequest.from_db(uid)
     if not rr:
-        return {}
+        LOGGER.error('RenderRequest UID %s not found for update', uid)
+        return {}, 404
 
     rr.update(
         progress=int(float(progress)),
         time_estimate=time_estimate,
         status=status
     )
-    return rr.to_dict()
+    LOGGER.debug('Updated RenderRequest UID %s to progress=%d, status=%s, time_estimate=%s',
+                 uid, rr.progress, rr.status, rr.time_estimate)
+    return rr.to_dict(), 200
 
 
 # endregion

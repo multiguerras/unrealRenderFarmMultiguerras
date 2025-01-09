@@ -235,7 +235,7 @@ class RenderRequest(object):
         :param worker: str. new worker assigned
         """
         self.worker = worker
-
+        LOGGER.debug('Assigned worker %s to RenderRequest UID: %s', worker, self.uid)
         write_db(self.__dict__)
 
 

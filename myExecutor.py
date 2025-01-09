@@ -4,10 +4,12 @@ My custom render executor for remote/distributed rendering
 
 import time
 import unreal
+import logging
 
 from util import client
 from util import renderRequest
 
+LOGGER = logging.getLogger(__name__)
 
 @unreal.uclass()
 class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
@@ -75,6 +77,9 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
         """
         self.parse_argument()
 
+        LOGGER.debug('Parsed arguments: Job ID=%s, Map Path=%s, Sequence Path=%s, Config Path=%s',
+                     self.job_id, self.map_path, self.seq_path, self.preset_path)
+
         # render pipeline creation
         self.pipeline = unreal.new_object(
             self.target_pipeline_class,
@@ -95,6 +100,8 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
         job = self.add_job()
         self.pipeline.initialize(job)
 
+        LOGGER.debug('Job initialized and pipeline started for Job ID=%s', self.job_id)
+
     @unreal.ufunction(override=True)
     def on_begin_frame(self):
         """
@@ -106,6 +113,7 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
         super(MyExecutor, self).on_begin_frame()
 
         if not self.pipeline:
+            LOGGER.debug('No pipeline found during on_begin_frame')
             return
 
         status = renderRequest.RenderStatus.in_progress
@@ -119,6 +127,9 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
 
         days, hours, minutes, seconds, _ = time_estimate.to_tuple()
         time_estimate = '{}h:{}m:{}s'.format(hours, minutes, seconds)
+
+        LOGGER.debug('Sending update: Progress=%d%%, Time Estimate=%s, Status=%s',
+                     progress, time_estimate, status)
 
         self.send_http_request(
             '{}/put/{}'.format(client.SERVER_API_URL, self.job_id),
@@ -164,14 +175,23 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
         """
         self.pipeline = None
         unreal.log("Finished rendering movie!")
+        LOGGER.debug('Job finished callback triggered. Is Errored: %s', is_errored)
         self.on_executor_finished_impl()
 
         time.sleep(1)
 
         # update to server
-        progress = 100
-        time_estimate = 'N/A'
-        status = renderRequest.RenderStatus.finished
+        if is_errored:
+            progress = 0
+            time_estimate = '0'
+            status = renderRequest.RenderStatus.errored
+            LOGGER.debug('Sending errored status update for Job ID=%s', self.job_id)
+        else:
+            progress = 100
+            time_estimate = 'N/A'
+            status = renderRequest.RenderStatus.finished
+            LOGGER.debug('Sending finished status update for Job ID=%s', self.job_id)
+
         self.send_http_request(
             '{}/put/{}'.format(client.SERVER_API_URL, self.job_id),
             "PUT",

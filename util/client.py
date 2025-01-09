@@ -62,8 +62,13 @@ def add_request(d):
     """
     try:
         response = requests.post(SERVER_API_URL+'/post', json=d)
+        LOGGER.debug('POST add request response: %s', response.text)
     except requests.exceptions.ConnectionError:
         LOGGER.error('failed to connect to server %s', SERVER_API_URL)
+        return
+    
+    if response.status_code != 200:
+        LOGGER.error('Failed to add request, status code: %d', response.status_code)
         return
     
     return renderRequest.RenderRequest.from_dict(response.json())
@@ -104,8 +109,13 @@ def update_request(uid, progress=0, status='', time_estimate=''):
                 'time_estimate': time_estimate
             }
         )
+        LOGGER.debug('PUT update request response: %s', response.text)
     except requests.exceptions.ConnectionError:
         LOGGER.error('failed to connect to server %s', SERVER_API_URL)
+        return
+
+    if response.status_code != 200:
+        LOGGER.error('Failed to update request, status code: %d', response.status_code)
         return
 
     return renderRequest.RenderRequest.from_dict(response.json())
