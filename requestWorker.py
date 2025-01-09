@@ -21,7 +21,7 @@ MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 # render worker specific configuration
 WORKER_NAME = 'RENDER_MACHINE_01'
 UNREAL_EXE = r'C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe'
-UNREAL_PROJECT = r"D:\Documentos publicos\Unreal Projects\MeerkatDemo\SequencerTest.uproject"
+UNREAL_PROJECT = r"D:\Documentos publicos\Unreal Projects\MeerkatDemo\MeerkatDemo.uproject"
 
 
 def render(uid, umap_path, useq_path, uconfig_path):
