@@ -96,6 +96,14 @@ if __name__ == '__main__':
     
             rrequest = renderRequest.RenderRequest.from_db(uid)
             try:
+                # Actualizar estado a 'in progress' antes de comenzar el renderizado
+                rrequest.update(
+                    progress=0,
+                    status=renderRequest.RenderStatus.in_progress,
+                    time_estimate='Calculando...'
+                )
+                LOGGER.info("Started rendering job %s", uid)
+    
                 output = render(
                     uid,
                     rrequest.umap_path,
@@ -108,7 +116,7 @@ if __name__ == '__main__':
                     status=renderRequest.RenderStatus.finished,
                     time_estimate='N/A'
                 )
-                LOGGER.info("finished rendering job %s", uid)
+                LOGGER.info("Finished rendering job %s", uid)
             except Exception as e:
                 LOGGER.error("Error rendering job %s: %s", uid, e)
                 # Actualizar estado a 'errored'

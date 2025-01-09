@@ -116,7 +116,8 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
             LOGGER.debug('No pipeline found during on_begin_frame')
             return
 
-        status = renderRequest.RenderStatus.in_progress
+        # Eliminar actualización del estado a 'in progress'
+        # status = renderRequest.RenderStatus.in_progress
         progress = 100 * unreal.MoviePipelineLibrary.\
             get_completion_percentage(self.pipeline)
         time_estimate = unreal.MoviePipelineLibrary.\
@@ -128,13 +129,13 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
         days, hours, minutes, seconds, _ = time_estimate.to_tuple()
         time_estimate = '{}h:{}m:{}s'.format(hours, minutes, seconds)
 
-        LOGGER.debug('Sending update: Progress=%d%%, Time Estimate=%s, Status=%s',
-                     progress, time_estimate, status)
+        LOGGER.debug('Sending update: Progress=%d%%, Time Estimate=%s',
+                     progress, time_estimate)
 
         self.send_http_request(
             '{}/put/{}'.format(client.SERVER_API_URL, self.job_id),
             "PUT",
-            '{};{};{}'.format(progress, time_estimate, status),
+            '{};{};{}'.format(progress, time_estimate, ''),  # Quitar status
             unreal.Map(str, str)
         )
 
@@ -216,3 +217,12 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
                         outputs = v.file_paths
                         # get all final output images
                         # unreal.log(outputs)
+            # Si el pipeline no tuvo éxito, forzar actualización a 'errored'
+
+            LOGGER.error('Pipeline failed for Job ID=%s', self.job_id)
+            self.send_http_request(
+                '{}/put/{}'.format(client.SERVER_API_URL, self.job_id),
+                "PUT",
+                '0;0;{}'.format(renderRequest.RenderStatus.errored),
+                unreal.Map(str, str)
+            )
