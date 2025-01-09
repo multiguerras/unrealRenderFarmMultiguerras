@@ -10,7 +10,9 @@ $(document).ready(function(){
 function ajaxRequest(){
     $.getJSON('/api/get', function(data){
         updateProgress(data);
-    })
+    }).fail(function(jqxhr, textStatus, error) {
+        console.error("Error fetching progress data: ", textStatus, ", ", error);
+    });
 }
 
 

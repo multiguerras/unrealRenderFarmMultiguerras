@@ -71,7 +71,8 @@ def render(uid, umap_path, useq_path, uconfig_path):
         stderr=subprocess.PIPE,
         env=env
     )
-    return proc.communicate()
+    stdout, stderr = proc.communicate()
+    return proc.returncode, stdout, stderr  # Retornar el código de retorno y las salidas
 
 
 if __name__ == '__main__':
@@ -104,12 +105,16 @@ if __name__ == '__main__':
                 )
                 LOGGER.info("Started rendering job %s", uid)
     
-                output = render(
+                returncode, stdout, stderr = render(
                     uid,
                     rrequest.umap_path,
                     rrequest.useq_path,
                     rrequest.uconfig_path
                 )
+                
+                if returncode != 0:
+                    raise subprocess.CalledProcessError(returncode, 'Unreal Engine render process failed', stderr.decode())
+
                 # Actualizar estado a 'finished'
                 rrequest.update(
                     progress=100,
@@ -117,8 +122,16 @@ if __name__ == '__main__':
                     time_estimate='N/A'
                 )
                 LOGGER.info("Finished rendering job %s", uid)
-            except Exception as e:
+            except subprocess.CalledProcessError as e:
                 LOGGER.error("Error rendering job %s: %s", uid, e)
+                # Actualizar estado a 'errored'
+                rrequest.update(
+                    progress=0,
+                    status=renderRequest.RenderStatus.errored,
+                    time_estimate='0'
+                )
+            except Exception as e:
+                LOGGER.error("Unexpected error rendering job %s: %s", uid, e)
                 # Actualizar estado a 'errored'
                 rrequest.update(
                     progress=0,

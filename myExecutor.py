@@ -215,10 +215,18 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
                 for k, v in render_pass_data.items():
                     if k.name == 'FinalImage':
                         outputs = v.file_paths
-                        # get all final output images
+                        # Obtener todas las imágenes de salida finales
                         # unreal.log(outputs)
-            # Si el pipeline no tuvo éxito, forzar actualización a 'errored'
-
+            # Actualizar estado a 'finished'
+            LOGGER.debug('Pipeline succeeded for Job ID=%s', self.job_id)
+            self.send_http_request(
+                '{}/put/{}'.format(client.SERVER_API_URL, self.job_id),
+                "PUT",
+                '100;N/A;{}'.format(renderRequest.RenderStatus.finished),
+                unreal.Map(str, str)
+            )
+        else:
+            # Si el pipeline no tuvo éxito, actualizar a 'errored'
             LOGGER.error('Pipeline failed for Job ID=%s', self.job_id)
             self.send_http_request(
                 '{}/put/{}'.format(client.SERVER_API_URL, self.job_id),

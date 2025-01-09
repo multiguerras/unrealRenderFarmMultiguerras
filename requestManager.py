@@ -106,17 +106,18 @@ def update_request(uid):
     
     try:
         progress, time_estimate, status = content.split(';')
+        progress = int(progress)
     except ValueError:
         LOGGER.error('Invalid update format for UID %s: %s', uid, content)
-        return {}, 400
+        return {"error": "Invalid format"}, 400
 
     rr = renderRequest.RenderRequest.from_db(uid)
     if not rr:
         LOGGER.error('RenderRequest UID %s not found for update', uid)
-        return {}, 404
+        return {"error": "RenderRequest not found"}, 404
 
     rr.update(
-        progress=int(float(progress)),
+        progress=progress,
         time_estimate=time_estimate,
         status=status
     )

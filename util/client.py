@@ -103,11 +103,8 @@ def update_request(uid, progress=0, status='', time_estimate=''):
     try:
         response = requests.put(
             SERVER_API_URL+'/put/{}'.format(uid),
-            params={
-                'progress': progress,
-                'status': status,
-                'time_estimate': time_estimate
-            }
+            data='{};{};{}'.format(progress, time_estimate, status),
+            headers={'Content-Type': 'text/plain'}
         )
         LOGGER.debug('PUT update request response: %s', response.text)
     except requests.exceptions.ConnectionError:
