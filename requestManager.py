@@ -133,30 +133,14 @@ def new_request_trigger(rrequest):
     """
     Triggers when a client posts a new render request to the server
     """
-    if rrequest.worker:
-        LOGGER.debug('Request UID: %s already assigned to worker: %s', rrequest.uid, rrequest.worker)
-        return
-
-    # currently, as a test, assigns all job to one worker
-    worker = 'RENDER_MACHINE_01'
-    assign_request(rrequest, worker)
-
-    LOGGER.info('Assigned job %s to %s', rrequest.uid, worker)
-    
-    # if multiple jobs came in at once, interval between each assignment
-    #time.sleep(4)
-    LOGGER.info('assigned job %s to %s', rrequest.uid, worker)
-
-
-def assign_request(rrequest, worker):
-    """
-    Assign render request to worker
-
-    :param rrequest: renderRequest.RenderRequest. a render request object
-    :param worker: str. worker name
-    """
-    rrequest.assign(worker)
+    LOGGER.debug('New request received, setting status to ready_to_start for UID=%s', rrequest.uid)
     rrequest.update(status=renderRequest.RenderStatus.ready_to_start)
+    # Eliminar asignación automática de worker
+
+
+# remove or comment out the assign_request function entirely:
+# def assign_request(rrequest, worker):
+#     # used to assign worker automatically, removing per new requirement
 
 
 if __name__ == '__main__':
