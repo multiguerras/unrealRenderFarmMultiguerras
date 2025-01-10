@@ -86,8 +86,8 @@ if __name__ == '__main__':
             LOGGER.debug('Request UID: %s, Worker: %s, Status: %s', req.uid, req.worker, req.status)
         
         uids = [rrequest.uid for rrequest in rrequests
-                if rrequest.worker == WORKER_NAME and
-                rrequest.status == renderRequest.RenderStatus.ready_to_start]
+                if rrequest.status == renderRequest.RenderStatus.ready_to_start]
+        uids = uids[:1]  # limit to 1 job at a time
         
         LOGGER.info('Found %d ready_to_start jobs for worker %s', len(uids), WORKER_NAME)
     
@@ -122,6 +122,10 @@ if __name__ == '__main__':
                     time_estimate='N/A'
                 )
                 LOGGER.info("Finished rendering job %s", uid)
+
+                # Volver a consultar la lista de trabajos para evitar re-render
+                rrequests = client.get_all_requests()
+                LOGGER.debug('Refreshed request list after finishing job %s', uid)
             except subprocess.CalledProcessError as e:
                 LOGGER.error("Error rendering job %s: %s", uid, e)
                 # Actualizar estado a 'errored'
