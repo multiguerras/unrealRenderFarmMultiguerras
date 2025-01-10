@@ -87,6 +87,7 @@ if __name__ == '__main__':
         
         uids = [rrequest.uid for rrequest in rrequests
                 if rrequest.status == renderRequest.RenderStatus.ready_to_start]
+        uids = uids[:1]  # limit to 1 job at a time
         
         LOGGER.info('Found %d ready_to_start jobs for worker %s', len(uids), WORKER_NAME)
     
