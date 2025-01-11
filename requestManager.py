@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Remote Render HTTP Server with REST API
 
@@ -156,7 +157,11 @@ if __name__ == '__main__':
     import os
 
     env = os.environ.copy()
-    env['PYTHONPATH'] += os.pathsep + MODULE_PATH
+
+    if 'PYTHONPATH' in env:
+        env['PYTHONPATH'] += os.pathsep + MODULE_PATH
+    else:
+        env['PYTHONPATH'] = MODULE_PATH
 
     command = [
         FLASK_EXE,
