@@ -7,7 +7,7 @@ import unreal
 import logging
 
 from util import client
-from util import renderRequest
+from util import renderRequestworker
 
 LOGGER = logging.getLogger(__name__)
 
@@ -185,12 +185,12 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
         if is_errored:
             progress = 0
             time_estimate = '0'
-            status = renderRequest.RenderStatus.errored
+            status = renderRequestworker.RenderStatus.errored
             LOGGER.debug('Sending errored status update for Job ID=%s', self.job_id)
         else:
             progress = 100
             time_estimate = 'N/A'
-            status = renderRequest.RenderStatus.finished
+            status = renderRequestworker.RenderStatus.finished
             LOGGER.debug('Sending finished status update for Job ID=%s', self.job_id)
 
         self.send_http_request(
@@ -222,7 +222,7 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
             self.send_http_request(
                 '{}/put/{}'.format(client.SERVER_API_URL, self.job_id),
                 "PUT",
-                '100;N/A;{}'.format(renderRequest.RenderStatus.finished),
+                '100;N/A;{}'.format(renderRequestworker.RenderStatus.finished),
                 unreal.Map(str, str)
             )
         else:
@@ -231,6 +231,6 @@ class MyExecutor(unreal.MoviePipelinePythonHostExecutor):
             self.send_http_request(
                 '{}/put/{}'.format(client.SERVER_API_URL, self.job_id),
                 "PUT",
-                '0;0;{}'.format(renderRequest.RenderStatus.errored),
+                '0;0;{}'.format(renderRequestworker.RenderStatus.errored),
                 unreal.Map(str, str)
             )

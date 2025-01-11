@@ -11,7 +11,7 @@ import time
 import json
 
 from util import client
-from util import renderRequest
+from util import renderRequestworker
 
 
 # Cambiar el nivel de logging a DEBUG para ver mensajes detallados
@@ -92,7 +92,7 @@ if __name__ == '__main__':
             LOGGER.debug('Request UID: %s, Worker: %s, Status: %s', req.uid, req.worker, req.status)
         
         uids = [rrequest.uid for rrequest in rrequests
-                if rrequest.status == renderRequest.RenderStatus.ready_to_start]
+                if rrequest.status == renderRequestworker.RenderStatus.ready_to_start]
         uids = uids[:1]  # limit to 1 job at a time
         
         LOGGER.info('Found %d ready_to_start jobs for worker %s', len(uids), WORKER_NAME)
@@ -101,12 +101,12 @@ if __name__ == '__main__':
         for uid in uids:
             LOGGER.info('rendering job %s', uid)
     
-            rrequest = renderRequest.RenderRequest.from_db(uid)
+            rrequest = renderRequestworker.RenderRequest.from_db(uid)
             try:
                 # Actualizar estado a 'in progress' antes de comenzar el renderizado
                 rrequest.update(
                     progress=0,
-                    status=renderRequest.RenderStatus.in_progress,
+                    status=renderRequestworker.RenderStatus.in_progress,
                     time_estimate='Calculando...'
                 )
                 LOGGER.info("Started rendering job %s", uid)
@@ -124,7 +124,7 @@ if __name__ == '__main__':
                 # Actualizar estado a 'finished'
                 rrequest.update(
                     progress=100,
-                    status=renderRequest.RenderStatus.finished,
+                    status=renderRequestworker.RenderStatus.finished,
                     time_estimate='N/A'
                 )
                 LOGGER.info("Finished rendering job %s", uid)
@@ -137,7 +137,7 @@ if __name__ == '__main__':
                 # Actualizar estado a 'errored'
                 rrequest.update(
                     progress=0,
-                    status=renderRequest.RenderStatus.errored,
+                    status=renderRequestworker.RenderStatus.errored,
                     time_estimate='0'
                 )
             except Exception as e:
@@ -145,7 +145,7 @@ if __name__ == '__main__':
                 # Actualizar estado a 'errored'
                 rrequest.update(
                     progress=0,
-                    status=renderRequest.RenderStatus.errored,
+                    status=renderRequestworker.RenderStatus.errored,
                     time_estimate='0'
                 )
     

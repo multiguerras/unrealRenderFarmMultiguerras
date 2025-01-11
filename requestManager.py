@@ -75,6 +75,14 @@ def delete_request(uid):
     renderRequest.remove_db(uid)
     return {"deleted": uid}
 
+@app.delete('/api/delete/all')
+def delete_all_requests():
+    """
+    Server DELETE api response, delete all render requests from database
+    """
+    renderRequest.remove_all()
+    return {"deleted": "all"}
+
 
 @app.post('/api/post')
 def create_request():

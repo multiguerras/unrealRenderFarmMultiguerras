@@ -6,7 +6,7 @@ Client request utility functions
 import logging
 import requests
 
-from . import renderRequest
+from . import renderRequestworker
 
 
 LOGGER = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ def get_all_requests():
 
     results = response.json().get('results', [])
     LOGGER.debug('Number of requests received: %d', len(results))
-    return [renderRequest.RenderRequest.from_dict(result) for result in results]
+    return [renderRequestworker.RenderRequest.from_dict(result) for result in results]
 
 
 def get_request(uid):
@@ -50,7 +50,7 @@ def get_request(uid):
         LOGGER.error('failed to connect to server %s', SERVER_API_URL)
         return
 
-    return renderRequest.RenderRequest.from_dict(response.json())
+    return renderRequestworker.RenderRequest.from_dict(response.json())
 
 
 def add_request(d):
@@ -71,7 +71,7 @@ def add_request(d):
         LOGGER.error('Failed to add request, status code: %d', response.status_code)
         return
     
-    return renderRequest.RenderRequest.from_dict(response.json())
+    return renderRequestworker.RenderRequest.from_dict(response.json())
 
 
 def remove_request(uid):
@@ -87,7 +87,7 @@ def remove_request(uid):
         LOGGER.error('failed to connect to server %s', SERVER_API_URL)
         return
     
-    return renderRequest.RenderRequest.from_dict(response.json())
+    return renderRequestworker.RenderRequest.from_dict(response.json())
 
 
 def update_request(uid, progress=0, status='', time_estimate=''):
@@ -115,4 +115,4 @@ def update_request(uid, progress=0, status='', time_estimate=''):
         LOGGER.error('Failed to update request, status code: %d', response.status_code)
         return
 
-    return renderRequest.RenderRequest.from_dict(response.json())
+    return renderRequestworker.RenderRequest.from_dict(response.json())
