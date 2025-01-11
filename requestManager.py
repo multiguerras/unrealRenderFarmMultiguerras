@@ -28,6 +28,7 @@ FLASK_EXE = r'flask'
 
 
 @app.route('/')
+@app.route('/<value>')
 def index_page():
     """
     Server landing page
@@ -40,7 +41,7 @@ def index_page():
 
     return render_template('index.html', requests=jsons)
 
-
+@app.route('/get')
 @app.get('/api/get')
 def get_all_requests():
     """
