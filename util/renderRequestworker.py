@@ -20,7 +20,7 @@ try:
 except FileNotFoundError:
     password = ''
 
-DATABASE_url = config.get('serverUrl', 'http://localhost:5000/api/') + '/api/'
+DATABASE_url = config.get('serverUrl', 'http://localhost:5000') + '/api/'
 
 
 LOGGER = logging.getLogger(__name__)
@@ -230,13 +230,6 @@ class RenderRequest(object):
     def update(self, progress=0, status='', time_estimate=''):
         """
         Update current request progress in the fake database
-
-        used by the render worker (renderWorker.py)
-        there are fields we can restrict for updating
-
-        :param progress: int. new progress
-        :param status: RenderRequest. new render status
-        :param time_estimate: str. new time remaining estimate
         """
         if progress:
             self.progress = progress
@@ -248,7 +241,7 @@ class RenderRequest(object):
         LOGGER.debug('Updating RenderRequest UID: %s with progress=%d, status=%s, time_estimate=%s',
                      self.uid, self.progress, self.status, self.time_estimate)
         
-        write_db(self.__dict__)
+        update_db(self.uid, self.__dict__)
 
 
 # region database utility
@@ -304,5 +297,18 @@ def write_db(d):
     response = requests.post(post_url, json=d, params={'password': password})
     if response.status_code != 200:
         raise Exception(f"Write failed for UID {uid}: {response.text}")
+
+
+def update_db(uid, d):
+    """
+    Update a database entry via HTTP PUT request
+    """
+    LOGGER.info('Updating RenderRequest %s', uid)
+    put_url = f"{DATABASE_url}put/{uid}"
+    payload = f"{d['progress']};{d['time_estimate']};{d['status']}"
+    headers = {'Content-Type': 'text/plain'}
+    response = requests.put(put_url, data=payload, headers=headers, params={'password': password})
+    if response.status_code != 200:
+        raise Exception(f"Update failed for UID {uid}: {response.text}")
 
 # endregion
