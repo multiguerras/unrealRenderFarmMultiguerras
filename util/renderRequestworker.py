@@ -7,6 +7,13 @@ import socket
 import uuid
 from datetime import datetime
 import requests
+import json
+import os
+
+with open(os.path.join(os.path.dirname(__file__), '..', 'config.json'), 'r') as f:
+    config = json.load(f)
+
+DATABASE_url = config.get('serverUrl', 'http://localhost:5000/api/')
 
 
 LOGGER = logging.getLogger(__name__)
@@ -16,8 +23,6 @@ MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 ROOT_PATH = os.path.dirname(MODULE_PATH)
 DATABASE = os.path.join(ROOT_PATH, 'database')
 '''
-# Database desde la api
-DATABASE_url = 'http://localhost:5000/api/'
 
 
 class RenderStatus(object):
