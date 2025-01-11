@@ -8,6 +8,7 @@ import logging
 import os
 import subprocess
 import time
+import json
 
 from util import client
 from util import renderRequest
@@ -19,11 +20,16 @@ LOGGER = logging.getLogger(__name__)
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 
-# render worker specific configuration
-WORKER_NAME = 'RENDER_MACHINE_01'
-UNREAL_EXE = r'C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe'
-UNREAL_PROJECT = r"D:\Documentos publicos\Unreal Projects\MeerkatDemo\MeerkatDemo.uproject"
+# Cargar configuración
+with open(os.path.join(MODULE_PATH, 'config.json'), 'r') as f:
+    config = json.load(f)
 
+WORKER_NAME = config["workerName"]
+UNREAL_EXE = config["unrealExe"]
+UNREAL_PROJECT = config["unrealProject"]
+
+client.SERVER_URL = config["serverUrl"]
+client.SERVER_API_URL = client.SERVER_URL + '/api'
 
 def render(uid, umap_path, useq_path, uconfig_path):
     """
