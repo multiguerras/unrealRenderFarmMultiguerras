@@ -170,7 +170,7 @@ if __name__ == '__main__':
         #'--debug',  # debug mode to auto reload script changes
         'run',
         '-h',
-        'localhost',
+        '0.0.0.0',
         '-p',
         '5000'
     ]
