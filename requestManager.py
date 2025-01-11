@@ -167,7 +167,7 @@ if __name__ == '__main__':
         FLASK_EXE,
         '--app',
         'requestManager.py',
-        '--debug',  # debug mode to auto reload script changes
+        #'--debug',  # debug mode to auto reload script changes
         'run',
         '-h',
         'localhost',
