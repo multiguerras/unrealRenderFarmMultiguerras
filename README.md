@@ -1,32 +1,27 @@
-<div align="center">
-<h1 align="center">Unreal Remote Render Farm</h1>
+# Unreal Render Farm
 
-  <p align="center">
-    Unreal Engine 5 remote render farm, a prototype for managing remote render
-requests and distribute render jobs over the network with REST API.
-Utilizes Unreal's Python
-and Movie Render Queue plugins.
-    <br />
-    <a href="https://youtu.be/4pGhaMQACy8">Demo</a>
-  </p>
+<div align=“center”>
+<img src=“https://i.imgur.com/nk6CKQY.png” alt=“preview”/>
 </div>
 
+## Características
+Las modificaciones que he hecho a partir del [repositorio original](https://github.com/leixingyu/unrealRenderFarm) son:
 
-## About The Project
+- Quitar la asignación automática del worker
+   - Ahora el worker no está limitado a renderizar un trabajo determinado. 
+- Manager adaptado para Windows
+- Script “renderRequest.py” separado
+   - Ahora el worker utiliza “renderRequestWorker.py” para que edite la database desde HTTP. 
+- Preparado para escalarse
+   - Al hacer independiente el worker y el Manager. Ambos se pueden ejecutar en dos máquinas diferentes. 
+- Configuración de workers movida a config.json
+- Protegido con Cloudflare
 
-<div align="center">
-<img src="https://i.imgur.com/nk6CKQY.png" alt="preview"/>
-</div>
+Por mejorar:
 
-The Unreal Render Farm is a side project of mine starting from 12/23/2022.
-I broke down the topics that involves developing this project into each self-contained blog. 
-
-- [Automate Unreal Rendering Using Python](https://www.xingyulei.com/post/ue-rendering-basic/)
-- [Building HTTP Server with REST API in Python](https://www.xingyulei.com/post/py-http-server/)
-- [Unreal Movie Render Queue (MRQ) Custom Executor](https://www.xingyulei.com/post/ue-rendering-custom-executor/)
-
-And finally a complete break-down of the components and walk-through of the project:
-- [Unreal Distributed Rendering Server Guide (Render Farm Implementation)](https://www.xingyulei.com/post/ue-rendering-remote-farm)
+- [ ] Hacer documentación para enseñar cómo configurar la versión modificada
+- [ ] Enseñar el porcentaje del progreso en la web
+- [ ] Compartir pantalla al servidor para enseñar   
 
 ## Getting Started
 
