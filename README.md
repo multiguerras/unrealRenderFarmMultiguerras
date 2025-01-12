@@ -2,6 +2,8 @@
 
 ![IMG_4595](https://github.com/user-attachments/assets/5a40a70e-d72c-4991-a0be-3437832d4f6e)
 
+Gracias a [@leixingyu](https://github.com/leixingyu) por la base del código.
+
 ## Características
 Las modificaciones que he hecho a partir del [repositorio original](https://github.com/leixingyu/unrealRenderFarm) son:
 
@@ -15,7 +17,7 @@ Las modificaciones que he hecho a partir del [repositorio original](https://gith
 - Configuración de workers movida a config.json
 - Protegido con Cloudflare
 
-Por mejorar:
+## Por mejorar:
 
 - [ ] Hacer documentación para enseñar cómo configurar la versión modificada
 - [ ] Enseñar el porcentaje del progreso en la web
