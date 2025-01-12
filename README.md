@@ -1,8 +1,6 @@
 # Unreal Render Farm
 
-<div align=“center”>
-<img src=“https://i.imgur.com/nk6CKQY.png” alt=“preview”/>
-</div>
+![IMG_4595](https://github.com/user-attachments/assets/5a40a70e-d72c-4991-a0be-3437832d4f6e)
 
 ## Características
 Las modificaciones que he hecho a partir del [repositorio original](https://github.com/leixingyu/unrealRenderFarm) son:
