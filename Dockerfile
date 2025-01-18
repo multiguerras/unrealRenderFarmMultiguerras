@@ -24,7 +24,7 @@ USER ue5
 # Variables de entorno
 ENV UNREAL_EXE="/UnrealEngine/Engine/Binaries/Linux/UnrealEditor"
 ENV UNREAL_PROJECT="/app/ProyectoUnreal/UnrealMultiguerras.uproject"
-ENV REQUEST_MANAGER_URL="http://localhost:5000"
+ENV REQUEST_MANAGER_URL="https://selfhost.pgscom.es"
 
 ENV SAMBA_SERVER="//MI-SERVIDOR-SAMBA/ruta"
 ENV SAMBA_USER="usuario_samba"
