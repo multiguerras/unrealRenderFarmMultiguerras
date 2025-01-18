@@ -1,7 +1,7 @@
 import sys
 import os
 import logging
-import unreal
+import unreal # type: ignore
 
 # Directorio donde se encuentran las colas de render
 renderqueuespath = "/Game/Cinematics/GruposEscenas"
