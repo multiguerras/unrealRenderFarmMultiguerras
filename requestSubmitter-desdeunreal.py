@@ -3,6 +3,9 @@ import os
 import logging
 import unreal
 
+# Directorio donde se encuentran las colas de render
+renderqueuespath = "/Game/Cinematics/GruposEscenas"
+
 # Agrega el directorio del script al sys.path
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_dir)
@@ -86,8 +89,7 @@ def gather_render_jobs_from_queues(folder_path):
     return render_jobs
 
 if __name__ == '__main__':
-    folder_path = "/Game/Cinematics/GruposEscenas"
-    jobs = gather_render_jobs_from_queues(folder_path)
+    jobs = gather_render_jobs_from_queues(renderqueuespath)
 
     for job in jobs:
         print(job)
