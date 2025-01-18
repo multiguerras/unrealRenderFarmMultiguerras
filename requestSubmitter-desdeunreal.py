@@ -49,6 +49,7 @@ def gather_render_jobs_from_queues(folder_path):
                 
                 seq_soft_obj_reference = job.sequence
                 map_soft_obj_reference = job.map  # Esto suele ser un objeto 'World' en Unreal
+                preset_soft_obj_reference = job.get_preset_origin()
 
                 umap_path = ""
                 useq_path = ""
@@ -80,7 +81,7 @@ def gather_render_jobs_from_queues(folder_path):
                 # Obtener el path de la configuración del job
                 config = job.get_configuration()
                 if config:
-                    uconfig_path = config.get_path_name()
+                    uconfig_path = preset_soft_obj_reference.get_path_name()
 
                 job_entry = {
                     'name': job_name,
