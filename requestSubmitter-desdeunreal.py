@@ -52,6 +52,7 @@ def gather_render_jobs_from_queues(folder_path):
 
                 umap_path = ""
                 useq_path = ""
+                uconfig_path = ""
 
                 if seq_soft_obj_reference:
                     seq_object_path = seq_soft_obj_reference.to_tuple()[0]
@@ -76,12 +77,17 @@ def gather_render_jobs_from_queues(folder_path):
                     if map_asset:
                         umap_path = map_asset.get_path_name()
                 
+                # Obtener el path de la configuración del job
+                config = job.get_configuration()
+                if config:
+                    uconfig_path = config.get_path_name()
+
                 job_entry = {
                     'name': job_name,
                     'owner': 'TEST_SUBMITTER_01',
                     'umap_path': umap_path,
                     'useq_path': useq_path,
-                    'uconfig_path': asset_path
+                    'uconfig_path': uconfig_path
                 }
 
                 render_jobs.append(job_entry)
