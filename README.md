@@ -16,6 +16,7 @@ Las modificaciones que he hecho a partir del [repositorio original](https://gith
    - Al hacer independiente el worker y el Manager. Ambos se pueden ejecutar en dos máquinas diferentes. 
 - Configuración de workers movida a config.json
 - Protegido con Cloudflare
+- Con el script “requestSubmitter-desdeunreal.py” se pueden [enviar trabajos desde el render queue de Unreal](#request-subimitter-desde-render-queue).
 
 ## Por mejorar:
 
@@ -48,3 +49,7 @@ on render job to run, which requires a map/level, a level sequence and a master 
 3. (Optional) Browse render jobs statues in browser at server url
 4. Render jobs by running `requestWorker.py`
 
+### Request Subimitter desde render queue
+
+Desde el script `requestSubmitter-desdeunreal.py` se pueden enviar todos los trabajos de varias colas de renderizado que hay en una carpeta dentro del proyecto.
+Solo hay que especificar la carpeta donde están en la variable `renderqueuespath`
