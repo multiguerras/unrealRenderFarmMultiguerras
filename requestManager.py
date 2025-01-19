@@ -34,7 +34,7 @@ def index_page():
     """
     rrequests = renderRequest.read_all()
     if not rrequests:
-        return 'Welcome!'
+        return 'No hay trabajo :D'
 
     jsons = [rrequest.to_dict() for rrequest in rrequests]
 
