@@ -7,7 +7,6 @@ jobs to worker)
 """
 
 import logging
-import time
 import os
 
 from flask import Flask
@@ -154,5 +153,23 @@ def new_request_trigger(rrequest):
 
 
 if __name__ == '__main__':
-    from waitress import serve
-    serve(app, host='0.0.0.0', port=5000)
+    import subprocess
+    import os
+    env = os.environ.copy()
+    if 'PYTHONPATH' in env:
+        env['PYTHONPATH'] += os.pathsep + MODULE_PATH
+    else:
+        env['PYTHONPATH'] = MODULE_PATH
+    command = [
+        FLASK_EXE,
+        '--app',
+        'requestManager.py',
+        #'--debug',  # debug mode to auto reload script changes
+        'run',
+        '-h',
+        '0.0.0.0',
+        '-p',
+        '5000'
+    ]
+    proc = subprocess.Popen(command, env=env)
+    LOGGER.info(proc.communicate())
