@@ -13,6 +13,6 @@ Para ejecutar el script se puede hacer desde la terminal de Windows de esta mane
 
 <!--
 
-"c:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" "c:\Documentos publicos\Unreal Projects\UnrealMultiguerras\UnrealMultiguerras.uproject" -ExecutePythonScript="c:\Users\pablo\Documents\Github\unrealRenderFarm\requestSubmitter-desdeunreal.py" -log
+"c:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" "c:\Documentos publicos\Unreal Projects\UnrealMultiguerras\UnrealMultiguerras.uproject" -ExecutePythonScript="c:\Users\pablo\Documents\Github\unrealRenderFarmMultiguerras\requestSubmitter-desdeunreal.py" -log
 
 -->
