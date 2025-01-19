@@ -100,4 +100,4 @@ if __name__ == '__main__':
 
     for job in jobs:
         print(job)
-        # send(job)
+        send(job)
