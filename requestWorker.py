@@ -13,6 +13,20 @@ import json
 from util import client
 from util import renderRequestworker
 
+local = True
+
+def convert_to_local_path(path: str) -> str:
+    segmento = "/Game/Cinematics/"
+    insercion = "local/"
+    
+    if segmento in path:
+        
+        partes = path.split(segmento, 1)
+        
+        return partes[0] + segmento + insercion + partes[1]
+    
+    # Si no se encuentra '/Game/Cinematics/' retornamos la ruta sin cambios
+    return path
 
 # Cambiar el nivel de logging a DEBUG para ver mensajes detallados
 logging.basicConfig(level=logging.DEBUG)
@@ -49,6 +63,8 @@ def render(uid, umap_path, useq_path, uconfig_path):
     :param uconfig_path: str. Unreal path to the preset/config asset
     :return: (str. str). output and error messages
     """
+    if local:
+        uconfig_path = convert_to_local_path(uconfig_path)
     command = [
         UNREAL_EXE,
         UNREAL_PROJECT,
