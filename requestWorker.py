@@ -21,14 +21,17 @@ LOGGER = logging.getLogger(__name__)
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 
 # Cargar configuración
-with open(os.path.join(MODULE_PATH, 'config.json'), 'r') as f:
-    config = json.load(f)
+try:
+    with open(os.path.join(MODULE_PATH, 'config.json'), 'r') as f:
+        config = json.load(f)
+except Exception:
+    config = {}
 
-WORKER_NAME = config["workerName"]
-UNREAL_EXE = config["unrealExe"]
-UNREAL_PROJECT = config["unrealProject"]
+WORKER_NAME = config.get("workerName") or os.environ.get("WORKER_NAME", "UnnamedWorker")
+UNREAL_EXE = config.get("unrealExe") or os.environ.get("UNREAL_EXE", "/UnrealEngine/Engine/Binaries/Linux/UnrealEditor")
+UNREAL_PROJECT = config.get("unrealProject") or os.environ.get("UNREAL_PROJECT", "/app/ProyectoUnreal/UnrealMultiguerras.uproject")
 
-client.SERVER_URL = config["serverUrl"]
+client.SERVER_URL = config.get("serverUrl") or os.environ.get("REQUEST_MANAGER_URL", "http://localhost:5000")
 client.SERVER_API_URL = client.SERVER_URL + '/api'
 
 def render(uid, umap_path, useq_path, uconfig_path):

@@ -13,10 +13,13 @@ from . import renderRequestworker
 
 LOGGER = logging.getLogger(__name__)
 
-with open(os.path.join(os.path.dirname(__file__), '..', 'config.json'), 'r') as f:
-    config = json.load(f)
+try:
+    with open(os.path.join(os.path.dirname(__file__), '..', 'config.json'), 'r') as f:
+        config = json.load(f)
+except Exception:
+    config = {}
 
-SERVER_URL = config.get('serverUrl', 'http://localhost:5000')
+SERVER_URL = config.get("serverUrl") or os.environ.get("REQUEST_MANAGER_URL", "http://localhost:5000")
 SERVER_API_URL = SERVER_URL + '/api'
 
 # Coger la contraseña de cloudflarepassword.json desde el valor "password", si no exsiste dejar la variable vacía

@@ -11,7 +11,13 @@ import json
 import os
 
 with open(os.path.join(os.path.dirname(__file__), '..', 'config.json'), 'r') as f:
-    config = json.load(f)
+    try:
+        config = json.load(f)
+    except Exception:
+        config = {}
+
+DATABASE_url = config.get('serverUrl') or os.environ.get("REQUEST_MANAGER_URL", "http://localhost:5000")
+DATABASE_url += '/api/'
 
 # Coger la contraseña de cloudflarepassword.json desde el valor "password", si no exsiste dejar la variable vacía
 try:
@@ -19,8 +25,6 @@ try:
         password = json.load(f)['password']
 except FileNotFoundError:
     password = ''
-
-DATABASE_url = config.get('serverUrl', 'http://localhost:5000') + '/api/'
 
 
 LOGGER = logging.getLogger(__name__)
