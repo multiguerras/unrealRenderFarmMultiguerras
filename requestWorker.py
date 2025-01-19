@@ -13,7 +13,7 @@ import json
 from util import client
 from util import renderRequestworker
 
-local = True
+local = False
 
 def convert_to_local_path(path: str) -> str:
     segmento = "/Game/Cinematics/"
