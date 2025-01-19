@@ -2,49 +2,48 @@
 
 ![IMG_4595](https://github.com/user-attachments/assets/5a40a70e-d72c-4991-a0be-3437832d4f6e)
 
-Gracias a [@leixingyu](https://github.com/leixingyu) por la base del código.
+[@leixingyu](https://github.com/leixingyu) programó [la base del código](https://github.com/leixingyu/unrealRenderFarm).
 
 ## Características
+
 Las modificaciones que he hecho a partir del [repositorio original](https://github.com/leixingyu/unrealRenderFarm) son:
 
 - Quitar la asignación automática del worker
-   - Ahora el worker no está limitado a renderizar un trabajo determinado. 
+  - Ahora el worker no está limitado a renderizar un trabajo determinado.
 - Manager adaptado para Windows
 - Script “renderRequest.py” separado
-   - Ahora el worker utiliza “renderRequestWorker.py” para que edite la database desde HTTP. 
+  - Ahora el worker utiliza “renderRequestWorker.py” para que edite la database desde HTTP.
 - Preparado para escalarse
-   - Al hacer independiente el worker y el Manager. Ambos se pueden ejecutar en dos máquinas diferentes. 
+  - Al hacer independiente el worker y el Manager. Ambos se pueden ejecutar en dos máquinas diferentes.
 - Configuración de workers movida a config.json
 - Protegido con Cloudflare
+- Con el script “requestSubmitter-desdeunreal.py” se pueden [enviar trabajos desde el render queue de Unreal](./requestSubimitter-desdeunreal.md).
 
-## Por mejorar:
+## Por mejorar
 
 - [ ] Hacer documentación para enseñar cómo configurar la versión modificada
 - [ ] Enseñar el porcentaje del progreso en la web
-- [ ] Compartir pantalla al servidor para enseñar   
+- [ ] Compartir pantalla al servidor para enseñar
 
-## Getting Started
+## Comenzando
 
-### Prerequisites
+### Prerrequisitos
 
+- [Flask](https://pypi.org/project/Flask/): un microframework web para crear APIs en Python
 
-- [Flask](https://pypi.org/project/Flask/): a micro web framework for creating APIs in Python
-    ```
+    ```python
     pip install -U Flask
     ```
-  the path to `flask.exe` needs to be specified in `requestManager.py`
 
+  La ruta a `flask.exe` debe ser especificada en `requestManager.py` (por defecto se usa la de "PATH").
 
-- An Unreal Project with Movie Render Queue plugin enabled and at least one sequencer properly set up. 
-The render farm needs at least
-on render job to run, which requires a map/level, a level sequence and a master config.
-  - the unreal executable and project path needs to be specified in `requestWorker.py`
-  - the test job needs to be specified in `requestSubmitter.py`
+- Un proyecto Unreal con el plugin Movie Render Queue habilitado con un Sequencer Level, un Config Preset y un asset de nivel.
+  - Todas las configuraciones de rutas del proyecto y de unreal.exe tienen que estar especificadas en config.json
+  - Si quieres mandar trabajos puedes editar la variable y ejecutar `requestSubmitter.py`.
 
-### Launch
+### Iniciar
 
-1. Run the `requestManager.py` first, which launches the server on `http://localhost:5000/`
-2. Submit render jobs using `requestSubmitter.py`
-3. (Optional) Browse render jobs statues in browser at server url
-4. Render jobs by running `requestWorker.py`
-
+1. Ejecute primero `requestManager.py`, lo cual lanza el servidor en `http://localhost:5000/`.
+2. Envíe trabajos de renderizado usando `requestSubmitter.py`.
+3. (Opcional) Navegue por los estados de los trabajos de renderizado en el navegador en la URL del servidor.
+4. Ejecute trabajos de renderizado mediante la ejecución de `requestWorker.py`.
